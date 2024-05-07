@@ -14,7 +14,7 @@ class RoomViewSet(viewsets.ViewSet, generics.ListAPIView):
 class PostViewSet(viewsets.ViewSet, generics.ListAPIView):
     queryset = Post.objects.all()
     serializer_class = serializers.PostSerializer
-    # pagination_class = paginators.PostPaginator
+    pagination_class = paginators.PostPaginator
     permission_classes = [permissions.AllowAny]
 
     # def get_permissions(self):
