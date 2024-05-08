@@ -4,6 +4,12 @@ from rest_framework import serializers
 
 
 class PostSerializer(serializers.ModelSerializer):
+    rooms = serializers.SerializerMethodField()
+
+    def get_rooms(self, obj):
+        from .serializers import RoomSerializer
+        return RoomSerializer(obj.rooms.all(), many=True).data
+
     class Meta:
         model = Post
         fields = '__all__'
@@ -11,7 +17,7 @@ class PostSerializer(serializers.ModelSerializer):
 
 class RoomSerializer(serializers.ModelSerializer):
     image = serializers.SerializerMethodField(source='image')
-    post = PostSerializer()
+    # post = PostSerializer()
 
     def get_image(self, room):
 
