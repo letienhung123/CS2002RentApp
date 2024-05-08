@@ -6,12 +6,12 @@ from renting import serializers, paginators, perms
 from rest_framework.decorators import action
 
 
-class RoomViewSet(viewsets.ViewSet, generics.ListAPIView):
+class RoomViewSet(viewsets.ViewSet, generics.ListAPIView, generics.CreateAPIView):
     queryset = Room.objects.filter(status=True).all()
     serializer_class = serializers.RoomSerializer
 
 
-class PostViewSet(viewsets.ViewSet, generics.ListAPIView):
+class PostViewSet(viewsets.ViewSet, generics.ListAPIView, generics.CreateAPIView):
     queryset = Post.objects.all()
     serializer_class = serializers.PostSerializer
     pagination_class = paginators.PostPaginator
