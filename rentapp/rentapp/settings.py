@@ -70,7 +70,8 @@ import cloudinary
 cloudinary.config(
     cloud_name="dqyjpgsx5",
     api_key="698914141241731",
-    api_secret="l245cihic1bEP5uxBjPrxY7-_CY"
+    api_secret="l245cihic1bEP5uxBjPrxY7-_CY",
+    api_proxy="http://proxy.server:3128"
 )
 
 INTERNAL_IPS = [
