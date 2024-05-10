@@ -8,7 +8,7 @@ class PostSerializer(serializers.ModelSerializer):
 
     def get_rooms(self, obj):
         from .serializers import RoomSerializer
-        return RoomSerializer(obj.rooms.all(), many=True).data
+        return RoomSerializer(obj.rooms.all(), many=True, context=self.context).data
 
     class Meta:
         model = Post
