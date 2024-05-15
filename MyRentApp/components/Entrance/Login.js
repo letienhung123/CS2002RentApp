@@ -10,6 +10,7 @@ const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [user, dispatch] = useContext(MyContext)
   
 
   const handleLogin = async () => {
@@ -36,6 +37,13 @@ const Login = () => {
             let user = await authApi(res.data.access_token).get(endpoints['current_user']);
             await AsyncStorage.setItem('user', JSON.stringify(user.data));
 
+            dispatch({
+              'type': 'login',
+              'payload': {
+                  'id': user.data.id,
+              }
+          })
+
             navigation.navigate('Main')
 
             console.info(user.data)
@@ -47,6 +55,9 @@ const Login = () => {
           setLoading(false);
         }
     
+  };
+  const handleSignUp = () => {
+    navigation.navigate('SignUp');
   };
 
   return (
@@ -77,6 +88,10 @@ const Login = () => {
   
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text style={styles.buttonText}>Đăng nhập</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={handleSignUp}>
+        <Text style={styles.signUpText}>Đăng kí tài khoản mới</Text>
       </TouchableOpacity>
       
     </View>
@@ -110,6 +125,18 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 18,
     color: '#fff',
+  },
+  signUpText: {
+    paddingTop:30,
+    color: '#007bff',
+    fontSize: 16,
+  },
+  loadingOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1,
   },
 });
 export default Login;

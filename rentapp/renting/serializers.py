@@ -6,6 +6,11 @@ from rest_framework import serializers
 class PostSerializer(serializers.ModelSerializer):
     rooms = serializers.SerializerMethodField()
     user = serializers.SerializerMethodField()
+    comment = serializers.SerializerMethodField()
+
+    def get_comment(self, obj):
+        from .serializers import CommentSerializer
+        return CommentSerializer(obj.comments.all(), many=True, context=self.context).data
 
     def get_user(self, obj):
         from .serializers import SimpleUserSerializer
@@ -58,7 +63,11 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
-    user = UserSerializer()
+    user = serializers.SerializerMethodField()
+
+    def get_user(self, obj):
+        from .serializers import SimpleUserSerializer
+        return SimpleUserSerializer(obj.user).data
 
     class Meta:
         model = Comment

@@ -5,23 +5,46 @@ from .models import Room, Post, User, Comment
 from renting import serializers, paginators, perms
 from rest_framework.decorators import action
 
+from .serializers import PostSerializer
 
-class RoomViewSet(viewsets.ViewSet, generics.ListAPIView, generics.CreateAPIView):
-    queryset = Room.objects.filter(status=True).all()
+
+class RoomViewSet(viewsets.GenericViewSet, generics.ListAPIView, generics.CreateAPIView):
     serializer_class = serializers.RoomSerializer
+    parser_classes = [parsers.FileUploadParser]
 
 
-class PostViewSet(viewsets.ViewSet, generics.ListAPIView, generics.CreateAPIView):
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_authenticated:  # Kiểm tra xem người dùng đã đăng nhập chưa
+            return Room.objects.filter(user=user, status=True)
+        return Room.objects.none()  # Trả về queryset rỗng nếu người dùng không đăng nhập
+
+    def list(self, request):
+        queryset = self.get_queryset()
+        serializer = self.serializer_class(queryset, many=True)
+        return Response(serializer.data)
+
+
+class PostViewSet(viewsets.ViewSet, generics.ListAPIView):
     queryset = Post.objects.all()
     serializer_class = serializers.PostSerializer
     # pagination_class = paginators.PostPaginator
     permission_classes = [permissions.AllowAny]
 
     # def get_permissions(self):
-    #     if self.action in ['add_comment']:
+    #     if self.action in ['add_comment', 'create_post']:
     #         return [permissions.IsAuthenticated()]
     #
     #     return self.permission_classes
+
+    @action(detail=False, methods=['post'])
+    def create_post(self, request):
+        user = request.user  # Lấy thông tin người gửi yêu cầu, tức là thông tin của người dùng đã đăng nhập
+        serializer = PostSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(user=user)  # Gán user cho Post mới được tạo
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @action(methods=['post'], url_path='add_comment', detail=True)
     def add_comment(self, request, pk):

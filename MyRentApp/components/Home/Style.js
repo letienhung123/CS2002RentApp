@@ -59,10 +59,43 @@ export default StyleSheet.create({
       },
       comments: {
         marginTop: 10,
-        fontSize: 12,
+        fontSize: 20,
         color: '#666',
       },
       body: {
         fontSize: 14,
-      }
+      },
+      modalContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)', // màu nền xám mờ
+      },
+      modalContent: {
+        backgroundColor: '#fff',
+        borderRadius: 10,
+        padding: 20,
+        width: '80%',
+        alignItems: 'center',
+      },
+      modalTitle: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginBottom: 10,
+      },
+      modalText: {
+        fontSize: 16,
+        marginBottom: 5,
+      },
+      closeButton: {
+        backgroundColor: '#007bff',
+        padding: 10,
+        borderRadius: 5,
+        marginTop: 20,
+      },
+      closeButtonText: {
+        color: '#fff',
+        fontSize: 16,
+        fontWeight: 'bold',
+      },
 })
