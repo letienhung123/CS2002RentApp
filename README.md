@@ -2,7 +2,8 @@
  BACKEND:
 - Đã được upload lên pythonanywhere nên không cần cài đặt
 - Source code có thể xem ở Repository này ở mục "rentapp"
- FRONTEND:
+
+FRONTEND:
 - Clone repsitory này về máy
 - Mở thư mục "MyRentApp" với Visual Studio Code
 - Ở terminal tại thư mục này gõ lệnh "mpn start"
